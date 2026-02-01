@@ -3,7 +3,8 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      # 发布tag v*格式触发actions
+      - "v*"
 
 permissions:
   contents: write
@@ -15,7 +16,7 @@ jobs:
       release_id: ${{ steps.create-release.outputs.id }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Create Release
         id: create-release
         uses: actions/github-script@v7
@@ -37,6 +38,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # 打包的不同型号的程序
           - platform: windows-latest
             target: x86_64-pc-windows-msvc
           - platform: windows-latest
@@ -57,7 +59,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -72,7 +74,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: "./src-tauri -> target"
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
